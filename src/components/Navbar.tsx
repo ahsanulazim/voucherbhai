@@ -1,7 +1,11 @@
 import { LuPlus } from "react-icons/lu";
-import { Link, NavLink } from "react-router";
+import { Link } from "react-router";
+import CustomerModal from "./ui/CustomerModal";
+import { useRef } from "react";
 
 const Navbar = () => {
+  const customerRef = useRef<HTMLDialogElement>(null);
+
   return (
     <div className="navbar bg-base-100 shadow-sm">
       <div className="flex-1">
@@ -28,12 +32,14 @@ const Navbar = () => {
         </label>
         <Link to="/">Voucher Bhai</Link>
       </div>
-      <div className="flex-none">
-        <NavLink to="/sale">
-          <button className="btn btn-success">
-            <LuPlus /> Sale
-          </button>
-        </NavLink>
+      <div className="flex gap-3 flex-none">
+        <button
+          className="btn btn-success"
+          onClick={() => customerRef.current?.showModal()}
+        >
+          <LuPlus /> Add Customer
+        </button>
+        <CustomerModal ref={customerRef} />
         <div className="dropdown dropdown-end">
           <div
             tabIndex={0}
