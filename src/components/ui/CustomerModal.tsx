@@ -1,11 +1,10 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { LuSearch } from "react-icons/lu";
 import CustomerSelect from "./CustomerSelect";
 
 type Inputs = {
   firstName: string;
   lastName: string;
-  phone: number;
+  phone: string;
   email: string;
   customer: string;
 };
@@ -17,10 +16,19 @@ const CustomerModal = ({
 }) => {
   const {
     register,
+    control,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<Inputs>();
+  } = useForm<Inputs>({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      phone: "",
+      email: "",
+      customer: "Pick or Add a Customer",
+    },
+  });
 
   const handleForm: SubmitHandler<Inputs> = (data) => {
     console.log(data);
@@ -37,10 +45,10 @@ const CustomerModal = ({
         <h3 className="font-bold text-lg">Customer Details</h3>
         <form className="fieldset" onSubmit={handleSubmit(handleForm)}>
           <label className="label">Customer</label>
-          <CustomerSelect />
+          <CustomerSelect control={control} />
           <div className="grid grid-cols-2 gap-5">
             <div>
-              <label className="label" htmlFor="firtName">
+              <label className="label" htmlFor="firstName">
                 First Name <span className="text-error">*</span>
               </label>
               <input
@@ -110,7 +118,7 @@ const CustomerModal = ({
           </div>
           <div className="modal-action">
             <button type="submit" className="btn btn-success">
-              Login
+              Save
             </button>
             <button
               type="button"

@@ -1,3 +1,4 @@
+import { Controller } from "react-hook-form";
 import Select from "react-select";
 
 type Option = {
@@ -17,8 +18,25 @@ const options: Option[] = [
   { value: "vanilla", label: "Vanilla" },
 ];
 
-const CustomerSelect = () => {
-  return <Select defaultValue={options[0]} options={options} />;
+const CustomerSelect = ({ control }: { control: any }) => {
+  return (
+    <Controller
+      name="customer"
+      control={control}
+      render={({ field }) => (
+        <Select
+          options={options}
+          value={options.find((opt) => opt.value === field.value)}
+          onChange={(val) => field.onChange(val?.value)}
+          defaultValue={options[0]}
+          classNames={{
+            control: (state) =>
+              state.isDisabled ? "bg-transparent cursor-not-allowed" : "",
+          }}
+        />
+      )}
+    />
+  );
 };
 
 export default CustomerSelect;
