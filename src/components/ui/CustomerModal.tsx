@@ -1,8 +1,13 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { LuSearch } from "react-icons/lu";
+import CustomerSelect from "./CustomerSelect";
 
 type Inputs = {
   firstName: string;
   lastName: string;
+  phone: number;
+  email: string;
+  customer: string;
 };
 
 const CustomerModal = ({
@@ -31,14 +36,17 @@ const CustomerModal = ({
       <div className="modal-box max-w-3xl">
         <h3 className="font-bold text-lg">Customer Details</h3>
         <form className="fieldset" onSubmit={handleSubmit(handleForm)}>
+          <label className="label">Customer</label>
+          <CustomerSelect />
           <div className="grid grid-cols-2 gap-5">
             <div>
-              <label className="label">
+              <label className="label" htmlFor="firtName">
                 First Name <span className="text-error">*</span>
               </label>
               <input
                 type="text"
                 className="input w-full"
+                placeholder="ex: MD Tarek"
                 {...register("firstName", {
                   required: "First Name is Required",
                 })}
@@ -48,16 +56,58 @@ const CustomerModal = ({
               )}
             </div>
             <div>
-              <label className="label">Last Name</label>
+              <label className="label" htmlFor="lastName">
+                Last Name
+              </label>
               <input
                 type="text"
                 className="input w-full"
+                placeholder="ex: Rahman"
                 {...register("lastName", { required: false })}
               />
             </div>
           </div>
-          <label className="label">Password</label>
-          <input type="password" className="input" placeholder="Password" />
+          <div className="grid grid-cols-2 gap-5">
+            <div>
+              <label className="label" htmlFor="phone">
+                Phone <span className="text-error">*</span>
+              </label>
+              <input
+                type="tel"
+                className="input w-full"
+                placeholder="ex: 01712345678"
+                {...register("phone", {
+                  required: "Phone Number field is Empty",
+                  pattern: {
+                    value: /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/,
+                    message: "Invalid Phone Number",
+                  },
+                })}
+              />
+              {errors.phone && (
+                <p className="text-error mt-2">{errors.phone.message}</p>
+              )}
+            </div>
+            <div>
+              <label className="label" htmlFor="email">
+                Email
+              </label>
+              <input
+                type="email"
+                className="input w-full"
+                placeholder="ex: username@email.com"
+                {...register("email", {
+                  pattern: {
+                    value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                    message: "Invalid Email Address",
+                  },
+                })}
+              />
+              {errors.email && (
+                <p className="text-error mt-2">{errors.email.message}</p>
+              )}
+            </div>
+          </div>
           <div className="modal-action">
             <button type="submit" className="btn btn-success">
               Login
